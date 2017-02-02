@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.handler.MessageContext;
+import com.google.enterprise.adaptor.sharepoint.SharePointAdaptor;
 
 /**
  * AuthenticationHandler implementation for SharePoint forms authentication
@@ -88,7 +89,8 @@ public class SharePointFormsAuthenticationHandler
           "Forms authentication failed.", ex);
       log.log(Level.INFO, "Possible SharePoint environment configured to use "
           + "claims based windows integrated authentication. "
-          + "Adaptor will fallback to use windows integrated authentication.");      
+          + "Adaptor will fallback to use windows integrated authentication "
+          + "using username \"{0}\"",  SharePointAdaptor.getAdaptorUser(""));
       return new AuthenticationResult(null, DEFAULT_COOKIE_TIMEOUT_SECONDS,
           LoginErrorCode.NOT_IN_FORMS_AUTHENTICATION_MODE.toString());
     }
@@ -98,8 +100,9 @@ public class SharePointFormsAuthenticationHandler
     if (result.getErrorCode() != LoginErrorCode.NO_ERROR) {
       log.log(Level.WARNING, "Forms authentication failed with error code {0}. "
           + "Possible SharePoint environment with multiple claims providers. "
-          + "Adaptor will fallback to use windows integrated authentication.",
-          result.getErrorCode());      
+          + "Adaptor will fallback to use windows integrated authentication."
+          + "using username \"{1}\"", new Object[] { result.getErrorCode(),
+          SharePointAdaptor.getAdaptorUser("")});
       return new AuthenticationResult(null, DEFAULT_COOKIE_TIMEOUT_SECONDS,
           result.getErrorCode().toString());
     }
