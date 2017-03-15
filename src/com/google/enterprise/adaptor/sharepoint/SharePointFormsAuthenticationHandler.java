@@ -101,7 +101,7 @@ public class SharePointFormsAuthenticationHandler
     if (result.getErrorCode() != LoginErrorCode.NO_ERROR) {
       log.log(Level.WARNING, "Forms authentication failed with error code {0}. "
           + "Possible SharePoint environment with multiple claims providers. "
-          + "Adaptor will fallback to use windows integrated authentication."
+          + "Adaptor will fallback to use windows integrated authentication "
           + "using username \"{1}\"",
           new Object[] {result.getErrorCode(), getAdaptorUser("")});
       return new AuthenticationResult(null, DEFAULT_COOKIE_TIMEOUT_SECONDS,
